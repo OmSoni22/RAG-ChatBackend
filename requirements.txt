@@ -1,0 +1,17 @@
+fastapi
+uvicorn[standard]
+sqlalchemy
+asyncpg
+aiosqlite
+redis
+pydantic
+pydantic-settings
+python-dotenv
+alembic
+rich
+
+# Testing dependencies
+pytest
+pytest-asyncio
+pytest-cov
+httpx
