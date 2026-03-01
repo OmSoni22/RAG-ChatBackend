@@ -17,7 +17,8 @@ from app.core.config.settings import settings
 # Import Base and models
 from app.core.db.base import Base
 # Import all models here so they are registered in metadata
-from app.modules.user.user_model import User  # noqa
+from app.modules.context.context_model import ContextItem  # noqa
+from app.modules.chat.chat_model import ChatThread, ChatMessage  # noqa
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.

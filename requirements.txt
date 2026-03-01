@@ -10,6 +10,11 @@ python-dotenv
 alembic
 rich
 
+# AI / RAG dependencies
+pydantic-ai[google]
+google-genai
+pgvector
+
 # Testing dependencies
 pytest
 pytest-asyncio

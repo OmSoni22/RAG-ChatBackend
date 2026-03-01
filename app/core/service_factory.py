@@ -1,25 +1,16 @@
 from sqlalchemy.ext.asyncio import AsyncSession
-from typing import Dict, Any, Type, TypeVar
+from typing import Dict, Any
 
-from app.modules.notification.services.notification_service import NotificationService
-from app.modules.user.services.user_service import UserService
 
 class ServiceFactory:
     """
     Factory to manage service instantiation and dependency injection.
     Scope: Per Request.
     """
-    
+
     def __init__(self, session: AsyncSession):
         self.session = session
         self._services: Dict[str, Any] = {}
-
-    @property
-    def notification(self) -> NotificationService:
-        """Get or create NotificationService."""
-        if "notification" not in self._services:
-            self._services["notification"] = NotificationService()
-        return self._services["notification"]
 
     @property
     def cache(self) -> "CacheService":
@@ -30,13 +21,20 @@ class ServiceFactory:
         return self._services["cache"]
 
     @property
-    def user(self) -> UserService:
-        """Get or create UserService with dependencies."""
-        if "user" not in self._services:
-            # Auto-wire dependencies: UserService needs Session + NotificationService + CacheService
-            self._services["user"] = UserService(
-                session=self.session, 
-                notification_service=self.notification,
-                cache_service=self.cache
+    def context(self) -> "ContextService":
+        """Get or create ContextService."""
+        if "context" not in self._services:
+            from app.modules.context.services.context_service import ContextService
+            self._services["context"] = ContextService(session=self.session)
+        return self._services["context"]
+
+    @property
+    def chat(self) -> "ChatService":
+        """Get or create ChatService."""
+        if "chat" not in self._services:
+            from app.modules.chat.services.chat_service import ChatService
+            self._services["chat"] = ChatService(
+                session=self.session,
+                context_service=self.context,
             )
-        return self._services["user"]
+        return self._services["chat"]

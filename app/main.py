@@ -49,7 +49,7 @@ async def lifespan(app: FastAPI):
 # Create FastAPI app with lifespan manager
 app = FastAPI(
     title=settings.app_name,
-    description="Production-grade FastAPI application with SOLID principles, MVC, and enterprise features",
+    description="RAG-powered chat backend: ingest context, chat with multi-thread history, and stream LLM answers grounded in your data.",
     version="1.0.0",
     debug=settings.debug,
     docs_url="/api/docs",
