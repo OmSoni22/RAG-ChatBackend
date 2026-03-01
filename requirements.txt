@@ -3,7 +3,6 @@ uvicorn[standard]
 sqlalchemy
 asyncpg
 aiosqlite
-redis
 pydantic
 pydantic-settings
 python-dotenv

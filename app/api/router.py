@@ -17,9 +17,6 @@ api_router = APIRouter()
 api_router.include_router(context_router, prefix="/context", tags=["Context"])
 api_router.include_router(chat_router, prefix="/chat", tags=["Chat"])
 
-# ─── Cache router ─────────────────────────────────────────────────────────────
-from app.api.cache_routes import router as cache_router
-api_router.include_router(cache_router, prefix="/cache", tags=["Cache"])
 
 
 # ─── System / Logging endpoints ───────────────────────────────────────────────

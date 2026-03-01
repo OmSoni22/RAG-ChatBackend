@@ -7,9 +7,6 @@ class Settings(BaseSettings):
 
     database_url: str
 
-    redis_enabled: bool = False
-    redis_url: str | None = None
-
     log_level: str
     log_dir: str
 

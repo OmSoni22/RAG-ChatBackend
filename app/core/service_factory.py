@@ -13,14 +13,6 @@ class ServiceFactory:
         self._services: Dict[str, Any] = {}
 
     @property
-    def cache(self) -> "CacheService":
-        """Get or create CacheService."""
-        if "cache" not in self._services:
-            from app.core.cache.cache_service import CacheService
-            self._services["cache"] = CacheService()
-        return self._services["cache"]
-
-    @property
     def context(self) -> "ContextService":
         """Get or create ContextService."""
         if "context" not in self._services:

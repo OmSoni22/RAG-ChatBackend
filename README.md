@@ -19,17 +19,17 @@ A production-grade **Retrieval-Augmented Generation (RAG) chat backend** built w
 
 ```
 app/
-├── api/                      # Central router + health + cache routes
+├── api/                      # Central router + health routes
 ├── core/
 │   ├── config/settings.py    # Pydantic settings (env-driven)
 │   ├── db/                   # Async SQLAlchemy engine & session
 │   ├── embeddings.py         # Shared Google embedding utility
-│   ├── cache/                # Redis cache client & service
+
 │   ├── exceptions/           # Custom exception classes & handlers
 │   └── logging/              # Structured JSON logging middleware
 └── modules/
     ├── context/              # Context ingestion module
-    │   ├── context_model.py        # SQLAlchemy: ContextItem (Vector 768d)
+    │   ├── context_model.py        # SQLAlchemy: ContextItem (Vector 3072d)
     │   ├── context_schema.py       # Pydantic schemas
     │   ├── context_repository.py   # CRUD + cosine similarity search
     │   ├── context_routes.py       # REST API routes
@@ -56,7 +56,7 @@ app/
 | Embeddings | Google `text-embedding-004` via `google-genai` |
 | LLM | Google Gemini (`gemini-2.0-flash`) via PydanticAI |
 | Migrations | Alembic |
-| Cache | Redis (optional) |
+
 
 ---
 
@@ -202,7 +202,7 @@ User Message
 | `id` | `BIGINT` PK | |
 | `title` | `VARCHAR(255)` | Short label |
 | `content` | `TEXT` | Raw user-provided text |
-| `embedding` | `VECTOR(768)` | Google embedding, IVFFlat indexed |
+| `embedding` | `VECTOR(3072)` | Google embedding, IVFFlat indexed |
 | `metadata` | `JSONB` | Optional tags / source info |
 | `created_at` | `TIMESTAMPTZ` | |
 | `updated_at` | `TIMESTAMPTZ` | |
@@ -247,7 +247,5 @@ pytest --cov=app tests/
 | `EMBEDDING_MODEL` | `text-embedding-004` | Google embedding model |
 | `LLM_MODEL` | `gemini-2.0-flash` | Gemini model for chat |
 | `TOP_K_CONTEXT` | `5` | Context chunks retrieved per query |
-| `REDIS_ENABLED` | `false` | Enable Redis caching |
-| `REDIS_URL` | — | Redis connection string |
 | `LOG_LEVEL` | `INFO` | Logging level |
 | `LOG_DIR` | `logs` | Directory for log files |

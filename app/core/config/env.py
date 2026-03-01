@@ -24,10 +24,7 @@ class ConfigValidator:
         elif not settings.database_url.startswith(("postgresql", "sqlite")):
             errors.append("DATABASE_URL must be PostgreSQL or SQLite")
             
-        # Validate Redis settings if enabled
-        if settings.redis_enabled and not settings.redis_url:
-            errors.append("REDIS_URL is required when REDIS_ENABLED=true")
-            
+
         # Validate log settings
         if not settings.log_dir:
             errors.append("LOG_DIR is required")

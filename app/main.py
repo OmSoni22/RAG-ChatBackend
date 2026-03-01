@@ -9,7 +9,6 @@ from app.api.health import router as health_router
 from app.core.logging.middleware import logging_middleware
 from app.core.config.settings import settings
 from app.core.config.env import validate_config
-from app.core.cache.redis import redis_client
 from app.core.db.session import close_db
 from app.bootstrap import bootstrap, shutdown
 from app.core.exceptions.base import AppException
