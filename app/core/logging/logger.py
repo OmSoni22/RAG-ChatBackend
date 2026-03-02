@@ -1,3 +1,4 @@
+import rich
 import logging
 from logging.handlers import TimedRotatingFileHandler
 import json
@@ -47,4 +48,4 @@ def add_to_log(level: str, message: str, show_in_terminal: bool = True, **extra)
     logger = logger_map.get(level, info_logger)
     logger.log(getattr(logging, level.upper()), message, extra=extra)
     if show_in_terminal:
-        print(message)
+        rich.print(message)

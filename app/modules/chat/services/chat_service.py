@@ -16,6 +16,7 @@ from app.modules.chat.chat_schema import (
 )
 from app.core.config.settings import settings
 from app.core.exceptions.base import AppException
+from app.core.logging.logger import add_to_log
 
 # Forward reference to avoid circular import
 if False:
@@ -120,6 +121,12 @@ class ChatService:
         await self.repo.create_message(thread_id, role="user", content=user_content)
 
         # 3. Retrieve top-k relevant context chunks via cosine similarity
+        add_to_log(
+            "debug",
+            f"[CHAT] Generating query embedding for user prompt | "
+            f"thread_id={thread_id} | "
+            f"prompt={user_content!r}",
+        )
         similar_chunks = await self.context_service.find_similar(user_content)
         context_text = "\n\n".join(
             f"[{i + 1}] {chunk.content}" for i, chunk in enumerate(similar_chunks)
@@ -132,6 +139,13 @@ class ChatService:
 
         # 5. Build conversation history for the LLM
         history_messages = await self.repo.get_messages_by_thread(thread_id)
+        add_to_log(
+            "debug",
+            f"[CHAT] Thread history loaded | "
+            f"thread_id={thread_id} | "
+            f"total_messages_in_thread={len(history_messages)} "
+            f"(excluding current user message: {len(history_messages) - 1})",
+        )
         # Build a single string of history (excluding the message we just saved, last item)
         history_text = "\n".join(
             f"{msg.role.upper()}: {msg.content}"

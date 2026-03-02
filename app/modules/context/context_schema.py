@@ -13,6 +13,12 @@ class ContextCreate(BaseModel):
     model_config = ConfigDict(populate_by_name=True)
 
 
+class ContextBulkCreate(BaseModel):
+    """Schema for creating multiple context items in one request."""
+
+    items: list[ContextCreate]
+
+
 class ContextRead(BaseModel):
     """Schema for reading a context item (embedding is never exposed)."""
 

@@ -2,23 +2,34 @@ from fastapi import APIRouter, Depends, Query, status
 
 from app.core.service_factory import ServiceFactory
 from app.core.dependencies import get_service_factory
-from .context_schema import ContextCreate, ContextRead, ContextListRead
+from .context_schema import ContextBulkCreate, ContextRead, ContextListRead
 
 router = APIRouter()
 
 
-@router.post("/", response_model=ContextRead, status_code=status.HTTP_201_CREATED)
+@router.post("/", response_model=list[ContextRead], status_code=status.HTTP_201_CREATED)
 async def add_context(
-    payload: ContextCreate,
+    payload: ContextBulkCreate,
     factory: ServiceFactory = Depends(get_service_factory),
 ):
     """
-    Add a new context chunk.
+    Add one or more context chunks in a single request.
 
-    Embeds the provided **content** using Google text-embedding-004 and
-    stores both the raw text and the vector in the database.
+    Send an **items** array where each element has `title`, `content`,
+    and an optional `metadata_` dict. Each item is embedded using
+    Google text-embedding-004 and stored in the database.
+
+    Example payload:
+    ```json
+    {
+      "items": [
+        {"title": "Doc A", "content": "..."},
+        {"title": "Doc B", "content": "...", "metadata_": {"source": "web"}}
+      ]
+    }
+    ```
     """
-    return await factory.context.add_context(payload)
+    return await factory.context.add_contexts_bulk(payload)
 
 
 @router.get("/", response_model=ContextListRead)
